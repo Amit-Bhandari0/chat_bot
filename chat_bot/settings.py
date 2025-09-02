@@ -64,6 +64,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'chat_bot.wsgi.application'
 
+DB_CA_PATH = os.path.join(os.path.dirname(__file__), config('DB_SSL_CA', default='ca.pem'))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -74,11 +75,12 @@ DATABASES = {
         'PORT': config('DB_PORT', default='11832'),
         'OPTIONS': {
             'ssl': {
-                'ca': str(BASE_DIR / config('DB_SSL_CA', default='ca.pem')),
+                'ca': DB_CA_PATH,
             }
         }
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
