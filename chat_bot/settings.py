@@ -64,7 +64,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'chat_bot.wsgi.application'
 
-DB_CA_PATH = os.path.join(os.path.dirname(__file__), config('DB_SSL_CA', default='ca.pem'))
+DB_CA_PATH = os.path.join(BASE_DIR, 'chat', 'ssl', 'ca.pem') 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
