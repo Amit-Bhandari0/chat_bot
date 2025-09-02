@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatBot - Your AI Assistant</title>
+    <link rel="stylesheet" href="{% static 'chat/landing.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <div class="landing-container">
+        <div class="floating-elements">
+            <div class="floating-element el-1"></div>
+            <div class="floating-element el-2"></div>
+            <div class="floating-element el-3"></div>
+            <div class="floating-element el-4"></div>
+        </div>
+
+        <header class="landing-header">
+            <div class="logo">
+                <div class="bot-avatar pulse">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM8 17C7.45 极客时间17 7 16.55 7 16C7 15.45 7.45 15 8 15C8.55 15 9 15.45 9 16C9 16.55 8.55 17 8 17ZM9 13C9 13.55 8.55 14 8 14C7.45 14 7 13.55 7 13V9C7 8.45 7.45 8 8 8C8.55 8 9 8.45 9 9V13ZM12 18C10.9 18 10 17.1 10 16H14C14 17.1 13.1 18 12 18ZM16 14C15.45 14 15 13.55 15 13V9C15 8.45 15.45 8 16 8C极客时间16.55 8 17 8.45 17 9V13C17 13.55 16.55 14 16 14Z" fill="currentColor" />
+                    </svg>
+                </div>
+                <span>ChatBot</span>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <nav class="landing-nav" id="landing-nav">
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <div class="auth-buttons">
+                    {% if user.is_authenticated %}
+                    <a href="/logout/" class="btn btn-primary nav-auth-btn">Logout</a>
+                    {% else %}
+                    <a href="/login/" class="btn btn-outline nav-auth-btn">Sign In</a>
+                    <a href="/signup/" class="btn btn-primary nav-auth-btn">Sign Up</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </header>
+
+        <main class="landing-main">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 class="animate-fade-in">
+                        Your Personal <span class="gradient-text">AI Assistant</span>
+                    </h1>
+                    <p class="animate-fade-in">
+                        ChatBot is an intelligent virtual assistant that can help you with answers to your questions, provide information, and assist with various tasks.
+                    </p>
+                    <div class="hero-actions animate-fade-in">
+                        <a href="/signup/" class="btn btn-primary btn-large">Get Started</a>
+                        <a href="/chat/" class="btn btn-outline btn-large try-chatting-btn">Go to Chat</a>
+                    </div>
+                    <div class="hero-stats animate-fade-in">
+                        <div class="stat">
+                            <div class="stat-number" id="stat-1">0</div>
+                            <div class="stat-label">Active Users</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="stat-2">0</div>
+                            <div class="stat-label">Conversations</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="stat-3">0</div>
+                            <div class="stat-label">Satisfaction Rate</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image animate-slide-in">
+                    <div class="chat-demo">
+                        <div class="message bot">Hello! How can I help you today?</div>
+                        <div class="message user">What can you do?</div>
+                        <div class="message bot">
+                            I can answer questions, provide information, and have conversations with you!
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="features" class="features">
+                <h2>Powerful Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">💬</div>
+                        <h3>Natural Conversations</h3>
+                        <p>Engage in natural, flowing conversations with our advanced AI.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Secure & Private</h3>
+                        <p>Your conversations are encrypted and stored securely.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Always Available</h3>
+                        <p>Access your AI assistant anytime, anywhere.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Chat History</h3>
+                        <p>Review your past conversations and continue where you left off.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="about" class="about">
+                <h2>About ChatBot</h2>
+                <p>
+                    ChatBot is built using cutting-edge AI technology to provide you with the best conversational experience. Whether you need information, assistance, or just someone to talk to, ChatBot is here for you 24/7.
+                </p>
+                <p>
+                    Our system learns from interactions to continuously improve and provide more accurate and helpful responses over time.
+                </p>
+            </section>
+
+            <section id="contact" class="contact">
+                <h2>Contact Us</h2>
+                <form class="contact-form" id="contact-form">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required />
+                        <span class="input-focus-border"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required />
+                        <span class="input-focus-border"></span>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+                        <span class="input-focus-border"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary form-submit-btn">
+                        <span class="btn-text">Send Message</span>
+                        <div class="btn-loader hidden">
+                            <div极客时间 class="spinner"></div>
+                        </div>
+                    </button>
+                    <div class="form-message"></div>
+                </form>
+            </section>
+        </main>
+
+        <footer class="landing-footer">
+            <div class="footer-content">
+                <div class="footer-main">
+                    <div class="footer-section">
+                        <div class="footer-logo">
+                            <div class="bot-avatar">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM8 17C7.45 17 7 16.55 7 16C7 15.45 7.45 15 8 15C8.55 15 9 15.45 9 16C9 16.55 8.55 17 8 17ZM9 13C9 13.55 8.55 14 8 14极客时间C7.45 14 7 13.55 7 13V9C7 8.45 7.45 8 8 8C8.55 8 9 8.45 9 9V13ZM12 18C10.9 18 10 17.1 10 16H14极客时间C14 17.1 13.1 18 12 18ZM16 14C15.45 14 15 13.55 15 13V9C15 8.45 15.45 8 16 8C16.55 8 17 8.45 17 9V13C17 13.55 16.55 14 16 14Z" fill="currentColor" />
+                                </svg>
+                            </div>
+                            <span>ChatBot</span>
+                        </div>
+                        <p>Your intelligent virtual assistant for everyday tasks and conversations.</p>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                            <li><a href="/chat/">Go to Chat</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-section">
+                        <h4>Contact Info</h4>
+                        <ul class="contact-info">
+                            <li><i class="fas fa-map-marker-alt"></i> 123 AI Street, Tech City</li>
+                            <li><i class="fas fa-envelope"></i> code55tech@gmail.com</li>
+                            <li><i class="fas fa-clock"></i> Available 24/7</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&copy; 2025 ChatBot. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{% static 'chat/landing.js' %}"></script>
+</body>
+</html>

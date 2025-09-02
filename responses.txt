@@ -1,0 +1,9 @@
+hello: Hello! How can I help you today?
+hi: Hi there! What can I do for you?
+how are you: I'm just a chatbot, but I'm functioning well. How can I assist you?
+what is your name: I'm ChatBot, your friendly AI assistant!
+who made you: I was created by a Amazing Developer to help you with your questions.
+thank you: You're welcome! Is there anything else I can help with?
+goodbye: Goodbye! Feel free to come back if you have more questions.
+what can you do: I can answer questions, provide information, help with tasks, and have conversations!
+help: I can help you with information, answer questions, or just chat. What do you need?
