@@ -1,6 +1,8 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import tempfile
+from django.core.exceptions import ImproperlyConfigured
 
 load_dotenv()
 
@@ -63,21 +65,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'chat_bot.wsgi.application'
 
-cert_path = None
-if os.getenv('DB_CA_CERT'):
-    cert_path = '/tmp/ca.pem'
-    with open(cert_path, 'w') as f:
-        f.write(os.environ['DB_CA_CERT'].replace('\\n', '\n'))
+ca_cert_content = os.environ.get("DB_CA_CERT")
+if not ca_cert_content:
+    raise ImproperlyConfigured("DB_CA_CERT is missing in .env")
+
+# Write CA cert to a temporary file
+with tempfile.NamedTemporaryFile(delete=False, mode="w") as f:
+    f.write(ca_cert_content)
+    temp_ca_file = f.name
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
-        'OPTIONS': {'ssl': {'ca': cert_path}} if cert_path else {}
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("DB_USER"),
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST"),
+        "PORT": os.environ.get("DB_PORT", "3306"),
+        "OPTIONS": {
+            "ssl": {"ca": temp_ca_file},
+        },
     }
 }
 
