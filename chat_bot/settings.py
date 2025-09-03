@@ -1,9 +1,6 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-import pymysql
-pymysql.install_as_MySQLdb()
-
 
 load_dotenv()
 
@@ -74,8 +71,13 @@ DATABASES = {
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST"),
         "PORT": os.getenv("DB_PORT", "3306"),
+        "OPTIONS": {
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+            "ssl": {"ca": "/etc/secrets/ca.pem"},
+        },
     }
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
