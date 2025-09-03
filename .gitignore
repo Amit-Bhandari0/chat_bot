@@ -21,5 +21,3 @@ staticfiles/
 *.swp
 .DS_Store
 Thumbs.db
-migrations/
-.pem
