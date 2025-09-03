@@ -12,7 +12,7 @@ const closeDeleteModalBtn = document.getElementById("close-delete-modal");
 const cancelDeleteBtn = document.getElementById("cancel-delete");
 const confirmDeleteBtn = document.getElementById("confirm-delete");
 const themeLightOption = document.getElementById("theme-light");
-const themeDarkOption = document.getElementById("theme-dark"); // ✅ fixed
+const themeDarkOption = document.getElementById("theme-dark");
 const chatHistoryBtn = document.getElementById("chat-history-btn");
 const chatHistoryModal = document.getElementById("chat-history-modal");
 const closeChatHistoryBtn = document.getElementById("close-chat-history");
@@ -37,7 +37,6 @@ const csrftoken =
   getCookie("csrf_token") ||
   document.querySelector('meta[name="csrf-token"]')?.content;
 
-// Format bot responses with markdown-like formatting
 function formatBotResponse(text) {
   text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
   text = text.replace(/\*(.*?)\*/g, "<em>$1</em>");
@@ -54,8 +53,11 @@ document.addEventListener("DOMContentLoaded", function () {
   if (sendBtn) sendBtn.addEventListener("click", sendMessage);
 
   if (userInput) {
-    userInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") sendMessage();
+    userInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        sendMessage();
+      }
     });
   }
 
@@ -344,7 +346,7 @@ function showNotification(message, type = "info") {
     case "success":
       notificationEl.style.backgroundColor = "#d1fae5";
       notificationEl.style.color = "#065f46";
-      notificationEl.style.border = "1px solid #a7f3d0"; // ✅ fixed
+      notificationEl.style.border = "1px solid #a7f3d0";
       break;
     case "error":
       notificationEl.style.backgroundColor = "#fee2e2";

@@ -26,14 +26,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.getAttribute('href') !== '#') {
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
-                
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
                     });
-                    
                     mobileMenuBtn.classList.remove('active');
                     landingNav.classList.remove('active');
                     document.body.style.overflow = 'auto';
@@ -50,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const submitBtn = contactForm.querySelector('.form-submit-btn');
             const btnText = submitBtn.querySelector('.btn-text');
             const btnLoader = submitBtn.querySelector('.btn-loader');
-            const formMessage = contactForm.querySelector('.form-message');
+            const formMessage = document.getElementById('contact-form-message');
             
             btnText.classList.add('hidden');
             btnLoader.classList.remove('hidden');
