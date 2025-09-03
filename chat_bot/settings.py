@@ -76,7 +76,7 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT", "3306"),
         "OPTIONS": {
             "ssl": {
-                "ca": os.getenv("DB_SSL_CA_PATH")
+                "ca": "/etc/secrets/ca.pem",
             }
         },
     }
