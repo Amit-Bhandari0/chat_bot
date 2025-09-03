@@ -77,7 +77,9 @@ DATABASES = {
         "OPTIONS": {
             "ssl": {
                 "ca": "/etc/secrets/ca.pem",
-            }
+                "check_hostname": False,
+                "ssl_verify_cert": False,
+            },
         },
     }
 }
