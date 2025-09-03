@@ -14,7 +14,7 @@
     --text-secondary: #cbd5e1;
     --text-tertiary: #94a3b8;
     --menu-border: rgba(255, 255, 255, 0.1);
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 极客时间0.06);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --transition: all 0.3s ease;
 }
 
@@ -173,10 +173,6 @@ body, html {
     content: "";
     position: absolute;
     display: none;
-}
-
-.checkbox-container input:checked ~ .checkmark极客时间:after {
-    display: block;
     left: 6px;
     top: 2px;
     width: 5px;
@@ -184,6 +180,10 @@ body, html {
     border: solid white;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
 }
 
 .auth-btn {
@@ -274,7 +274,7 @@ body, html {
 }
 
 .notification.success {
-    background-color: rgba(16, 185, 129, 极客时间0.1);
+    background-color: rgba(16, 185, 129, 0.1);
     color: #10b981;
     border: 1px solid rgba(16, 185, 129, 0.2);
 }

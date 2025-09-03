@@ -101,15 +101,3 @@ ACCOUNT_LOGOUT_REDIRECT_URL = '/login/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-CSRF_TRUSTED_ORIGINS = [
-    "https://chat-bot-h736.onrender.com",
-    "https://www.chat-bot-h736.onrender.com/",
-]
-
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_HTTPONLY = True
-CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_SAMESITE = 'Lax'
