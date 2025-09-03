@@ -1,28 +1,28 @@
 from pathlib import Path
 import os
-from decouple import config
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-fallback-key-for-dev')
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-for-dev')
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
-DEBUG = config('DEBUG', default=True, cast=bool)
-
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*', cast=lambda v: [s.strip() for s in v.split(',')])
-
-# API Configuration
-GEMINI_API_KEY = config('GEMINI_API_KEY', default='')
-OPENWEATHER_API_KEY = config('OPENWEATHER_API_KEY', default='')
+# API keys
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
+OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY', '')
 
 # Email
-EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
-EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER)
-CONTACT_EMAIL = config('CONTACT_EMAIL', default=EMAIL_HOST_USER)
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
+CONTACT_EMAIL = os.getenv('CONTACT_EMAIL', EMAIL_HOST_USER)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -64,19 +65,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'chat_bot.wsgi.application'
 
-DB_CA_PATH = os.path.join(BASE_DIR, 'chat', 'ssl', 'ca.pem') 
+
+# ---------- DATABASE ----------
+# Write the CA cert from env into /tmp/ca.pem
+cert_path = '/tmp/ca.pem'
+if os.getenv('DB_CA_CERT'):
+    with open(cert_path, 'w') as f:
+        f.write(os.environ['DB_CA_CERT'].replace('\\n', '\n'))
+else:
+    cert_path = None
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('DB_NAME', default='defaultdb'),
-        'USER': config('DB_USER', default='avnadmin'),
-        'PASSWORD': config('DB_PASSWORD', default='your_password'),
-        'HOST': config('DB_HOST', default='chatbot-chatbot-msg.d.aivencloud.com'),
-        'PORT': config('DB_PORT', default='11832'),
+        'NAME': os.getenv('DB_NAME', 'defaultdb'),
+        'USER': os.getenv('DB_USER', 'avnadmin'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'your_password'),
+        'HOST': os.getenv('DB_HOST', 'chatbot-chatbot-msg.d.aivencloud.com'),
+        'PORT': os.getenv('DB_PORT', '11832'),
         'OPTIONS': {
-            'ssl': {
-                'ca': DB_CA_PATH,
-            }
+            'ssl': {'ca': cert_path} if cert_path else {}
         }
     }
 }
@@ -96,8 +104,9 @@ USE_TZ = True
 
 # STATIC FILES
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static'] 
-STATIC_ROOT = BASE_DIR / 'staticfiles' 
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Auth
 LOGIN_REDIRECT_URL = '/'
