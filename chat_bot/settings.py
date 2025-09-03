@@ -66,15 +66,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'chat_bot.wsgi.application'
 
 
-ssl_cert_content = os.getenv("MYSQL_SSL_CERT")
-
-ssl_options = {}
-if ssl_cert_content:
-    # Write the env content to a temp file for MySQL client
-    with tempfile.NamedTemporaryFile(delete=False) as f:
-        f.write(ssl_cert_content.encode())
-        ssl_options = {"ssl": {"ca": f.name}}
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
@@ -82,8 +73,12 @@ DATABASES = {
         "USER": os.getenv("DB_USER"),
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT", 3306),
-        "OPTIONS": ssl_options,
+        "PORT": os.getenv("DB_PORT", "3306"),
+        "OPTIONS": {
+            "ssl": {
+                "ca": os.getenv("DB_SSL_CA_PATH")
+            }
+        },
     }
 }
 
