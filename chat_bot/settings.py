@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import tempfile
-from django.core.exceptions import ImproperlyConfigured
+
 
 load_dotenv()
 
@@ -65,11 +65,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'chat_bot.wsgi.application'
 
-ca_cert_content = os.environ.get("DB_CA_CERT")
-if not ca_cert_content:
-    raise ImproperlyConfigured("DB_CA_CERT is missing in .env")
+ca_cert_content = os.environ.get("DB_CA_CERT", "").replace("\\n", "\n")
 
-# Write CA cert to a temporary file
+# Write it to a temporary file
 with tempfile.NamedTemporaryFile(delete=False, mode="w") as f:
     f.write(ca_cert_content)
     temp_ca_file = f.name
@@ -83,7 +81,7 @@ DATABASES = {
         "HOST": os.environ.get("DB_HOST"),
         "PORT": os.environ.get("DB_PORT", "3306"),
         "OPTIONS": {
-            "ssl": {"ca": temp_ca_file},
+            "ssl": {"ca": temp_ca_file},  # MySQL expects a file path here
         },
     }
 }
