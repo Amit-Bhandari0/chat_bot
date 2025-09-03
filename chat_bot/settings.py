@@ -1,7 +1,8 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-import tempfile
+import pymysql
+pymysql.install_as_MySQLdb()
 
 
 load_dotenv()
@@ -65,7 +66,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'chat_bot.wsgi.application'
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
@@ -74,13 +74,6 @@ DATABASES = {
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST"),
         "PORT": os.getenv("DB_PORT", "3306"),
-        "OPTIONS": {
-            "ssl": {
-                "ca": "/etc/secrets/ca.pem",
-                "check_hostname": False,
-                "ssl_verify_cert": False,
-            },
-        },
     }
 }
 
