@@ -10,11 +10,9 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-for-dev')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
-# API keys
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
 OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY', '')
 
-# Email
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
@@ -36,7 +34,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # for static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -65,30 +63,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'chat_bot.wsgi.application'
 
-
-# ---------- DATABASE ----------
-# Write the CA cert from env into /tmp/ca.pem
-cert_path = '/tmp/ca.pem'
+cert_path = None
 if os.getenv('DB_CA_CERT'):
+    cert_path = '/tmp/ca.pem'
     with open(cert_path, 'w') as f:
         f.write(os.environ['DB_CA_CERT'].replace('\\n', '\n'))
-else:
-    cert_path = None
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME', 'defaultdb'),
-        'USER': os.getenv('DB_USER', 'avnadmin'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'your_password'),
-        'HOST': os.getenv('DB_HOST', 'chatbot-chatbot-msg.d.aivencloud.com'),
-        'PORT': os.getenv('DB_PORT', '11832'),
-        'OPTIONS': {
-            'ssl': {'ca': cert_path} if cert_path else {}
-        }
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
+        'OPTIONS': {'ssl': {'ca': cert_path}} if cert_path else {}
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -102,13 +93,11 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# STATIC FILES
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Auth
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_URL = '/login/'
