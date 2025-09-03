@@ -63,6 +63,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'chat_bot.wsgi.application'
 
+print("CA path exists:", os.path.exists("/etc/secrets/ca.pem"))
+
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
