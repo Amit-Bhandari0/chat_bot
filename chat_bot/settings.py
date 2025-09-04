@@ -65,7 +65,7 @@ WSGI_APPLICATION = 'chat_bot.wsgi.application'
 
 cert_path = '/tmp/ca.pem'
 with open(cert_path, 'w') as f:
-    f.write(os.environ['DB_CA_CERT'])
+    f.write(os.environ['DB_CA_CERT'].replace('\\n', '\n'))
 
 DATABASES = {
     'default': {
@@ -76,8 +76,9 @@ DATABASES = {
         'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': os.getenv('DB_PORT', '3306'),
         'OPTIONS': {
-            'ssl': {'ca': cert_path},
-            'ssl_disabled': False, 
+            'ssl': {
+                'ca': cert_path,
+            }
         }
     }
 }
