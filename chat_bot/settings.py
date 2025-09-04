@@ -63,24 +63,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'chat_bot.wsgi.application'
 
-print("CA path exists:", os.path.exists("/etc/secrets/ca.pem"))
-
+cert_path = '/tmp/ca.pem'
+with open(cert_path, 'w') as f:
+    f.write(os.environ['DB_CA_CERT'].replace('\\n', '\n'))
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT", "3306"),
-        "OPTIONS": {
-            "ssl": {
-                "ca": "/etc/secrets/ca.pem",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '3306'),
+        'OPTIONS': {
+            'ssl': {
+                'ca': cert_path,
+                'check_hostname': False,   # 👈 add this
             }
         },
     }
 }
+
 
 
 AUTH_PASSWORD_VALIDATORS = [
