@@ -292,9 +292,10 @@ function deleteAccount() {
   fetch("/delete-account/", {
     method: "POST",
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
       "X-CSRFToken": csrftoken,
     },
+    body: JSON.stringify({}),
   })
     .then((res) => {
       if (!res.ok) {

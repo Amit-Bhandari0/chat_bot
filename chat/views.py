@@ -163,6 +163,7 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
+@csrf_exempt
 @login_required
 def delete_account(request):
     if request.method == 'POST':
