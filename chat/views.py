@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_protect
 from django.utils import timezone
 from django.db import transaction
 from django.core.mail import send_mail
@@ -163,8 +164,8 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
-@csrf_exempt
 @login_required
+@csrf_protect
 def delete_account(request):
     if request.method == 'POST':
         try:
