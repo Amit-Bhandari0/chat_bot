@@ -210,6 +210,7 @@ def resend_otp(request):
             return JsonResponse({'success': False, 'error': str(e)})
     return JsonResponse({'success': False, 'error': 'Invalid request method'})
 
+@csrf_exempt
 def otp_verification(request):
     if request.user.is_authenticated:
         return redirect('/')

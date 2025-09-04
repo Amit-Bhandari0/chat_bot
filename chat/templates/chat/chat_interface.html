@@ -5,6 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ChatBot - Your Virtual Assistant</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="{% static 'chat/favicon.svg' %}"
+    />
     <link rel="stylesheet" href="{% static 'chat/chat_styles.css' %}" />
     <meta name="csrf-token" content="{{ csrf_token }}" />
   </head>
@@ -120,14 +125,35 @@
 
         <div class="chat-messages" id="chat-box">
           {% if not user.is_authenticated %}
-          <div class="message bot">
-            Hello! I'm ChatBot, your virtual assistant powered by Google Gemini.
-            How can I help you today?
-            <div class="login-prompt">
+          <div class="welcome-container">
+            <div class="welcome-message">
+              <h2>Welcome to ChatBot</h2>
               <p>
-                Please <a href="/login/">login</a> to start a conversation and
-                save your chat history.
+                Hello! I'm your virtual assistant powered by Google Gemini. I
+                can help answer questions, provide information, and assist with
+                various tasks.
               </p>
+              <div class="welcome-features">
+                <div class="feature">
+                  <div class="feature-icon">💬</div>
+                  <p>Smart Conversations</p>
+                </div>
+                <div class="feature">
+                  <div class="feature-icon">🌤️</div>
+                  <p>Weather Updates</p>
+                </div>
+                <div class="feature">
+                  <div class="feature-icon">⚡</div>
+                  <p>Quick Responses</p>
+                </div>
+              </div>
+              <div class="login-prompt">
+                <p>
+                  Please <a href="/login/">login</a> or
+                  <a href="/signup/">create an account</a> to start a
+                  conversation and save your chat history.
+                </p>
+              </div>
             </div>
           </div>
           {% endif %}
@@ -158,8 +184,9 @@
         </div>
         {% else %}
         <div class="chat-input-container login-prompt-container">
-          <div class="login-prompt centered">
-            <p>Please <a href="/login/">login</a> to chat with me</p>
+          <div class="login-prompt-action">
+            <a href="/login/" class="btn btn-primary">Login to Chat</a>
+            <a href="/signup/" class="btn btn-outline">Create Account</a>
           </div>
         </div>
         {% endif %}
