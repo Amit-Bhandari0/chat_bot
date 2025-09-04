@@ -34,7 +34,7 @@ function getCookie(name) {
 }
 
 const csrftoken =
-  getCookie("csrf_token") ||
+  getCookie("csrftoken") ||
   document.querySelector('meta[name="csrf-token"]')?.content;
 
 function formatBotResponse(text) {
@@ -314,10 +314,7 @@ function deleteAccount() {
     })
     .catch((err) => {
       console.error(err);
-      showNotification(
-        "An error occurred while deleting the account",
-        "error"
-      );
+      showNotification("An error occurred while deleting the account", "error");
     });
 
   if (deleteAccountModal) deleteAccountModal.classList.remove("active");
